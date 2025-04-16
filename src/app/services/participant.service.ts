@@ -7,7 +7,7 @@ import { ParticipantModel } from '../models/participant.model';
   providedIn: 'root',
 })
 export class ParticipantService {
-  private apiUrl = 'http://localhost:8080/api/participants';
+  private apiUrl = 'https://fsdback1.onrender.com/api/participants';
 
   constructor(private http: HttpClient) {}
 

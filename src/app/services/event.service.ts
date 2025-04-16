@@ -7,7 +7,7 @@ import { EventModel } from '../models/event.model';
   providedIn: 'root',
 })
 export class EventService {
-  private apiUrl = 'http://localhost:8080/api/events';
+  private apiUrl = 'https://fsdback1.onrender.com/api/events';
 
   constructor(private http: HttpClient) {}
 

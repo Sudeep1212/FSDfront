@@ -8,7 +8,7 @@ import { LoginRequestModel } from '../models/login-request.model';
   providedIn: 'root',
 })
 export class RegistrationService {
-  private apiUrl = 'http://localhost:8080/api/registrations';
+  private apiUrl = 'https://fsdback1.onrender.com/api/registrations';
 
   constructor(private http: HttpClient) {}
 
