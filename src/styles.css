@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --primary-color: #00c2ff;
+  --primary-dark: #0099cc;
+  --primary-light: #b3ecff;
+  --text-color: #333333;
+  --text-light: #666666;
+  --background-light: #f8f9fa;
+  --white: #ffffff;
+  --danger: #dc3545;
+  --danger-dark: #c82333;
+  --border-radius: 8px;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--background-light);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+button {
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

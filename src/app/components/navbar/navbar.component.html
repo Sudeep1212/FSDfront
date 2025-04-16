@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <span class="tech">TECH</span><span class="fest">FEST</span>
+    </a>
+    <div class="nav-links">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+      <a routerLink="/events" routerLinkActive="active">Events</a>
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+        <a routerLink="/login" routerLinkActive="active" class="login-btn"
+          >Login</a
+        >
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/profile" routerLinkActive="active">Profile</a>
+        <a href="javascript:void(0)" (click)="logout()" class="logout-btn"
+          >Logout</a
+        >
+      </ng-container>
+      <a routerLink="/admin" routerLinkActive="active" class="admin-link"
+        >Admin</a
+      >
+    </div>
+  </div>
+</nav>

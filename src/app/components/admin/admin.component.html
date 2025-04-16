@@ -1,0 +1,526 @@
+<div class="admin-container">
+  <!-- Admin Header -->
+  <div class="admin-header">
+    <h1>Techfest Admin Dashboard</h1>
+    <p>Manage events, registrations, and participants</p>
+  </div>
+
+  <!-- Login Form -->
+  <div *ngIf="!isAuthenticated" class="login-form">
+    <h2>Admin Login</h2>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <div class="input-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          placeholder="Enter your username"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          placeholder="Enter your password"
+        />
+      </div>
+    </div>
+    <button class="btn-login" (click)="login()">Login</button>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div *ngIf="isAuthenticated" class="admin-dashboard">
+    <div class="tabs">
+      <button
+        [class.active]="activeTab === 'events'"
+        (click)="setActiveTab('events')"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Events
+      </button>
+      <button
+        [class.active]="activeTab === 'registrations'"
+        (click)="setActiveTab('registrations')"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        Registrations
+      </button>
+      <button
+        [class.active]="activeTab === 'participants'"
+        (click)="setActiveTab('participants')"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Participants
+      </button>
+    </div>
+
+    <!-- Events Tab -->
+    <div *ngIf="activeTab === 'events'" class="tab-content">
+      <div class="tab-header">
+        <h3>Events Management</h3>
+        <div class="action-buttons">
+          <!-- Search Box -->
+          <div class="search-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              [(ngModel)]="eventSearchTerm"
+              (input)="searchEvents()"
+              placeholder="Search events..."
+            />
+          </div>
+          <!-- Add Event Button -->
+          <button
+            class="btn-add"
+            (click)="showAddEventForm = !showAddEventForm"
+          >
+            <svg
+              *ngIf="!showAddEventForm"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <svg
+              *ngIf="showAddEventForm"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            {{ showAddEventForm ? "Cancel" : "Add Event" }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Event Form -->
+      <div *ngIf="showAddEventForm" class="add-event-form">
+        <h4>Add New Event</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventName">Event Name</label>
+            <input
+              type="text"
+              id="eventName"
+              [(ngModel)]="newEvent.eventName"
+              placeholder="Enter event name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="eventFee">Event Fee</label>
+            <input
+              type="number"
+              id="eventFee"
+              [(ngModel)]="newEvent.eventFee"
+              placeholder="Enter fee amount"
+            />
+          </div>
+        </div>
+        <button class="btn-create" (click)="addEvent()">Create Event</button>
+      </div>
+
+      <!-- Events Table -->
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Event Name</th>
+              <th>Fee</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of filteredEvents">
+              <td>{{ event.eventId }}</td>
+              <td class="primary-data">{{ event.eventName }}</td>
+              <td>₹{{ event.eventFee }}</td>
+              <td class="actions-cell">
+                <div class="action-buttons-container">
+                  <button
+                    class="delete-btn"
+                    (click)="deleteEvent(event.eventId)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path
+                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                      ></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredEvents.length === 0">
+              <td colspan="4" class="no-data">No events found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Registrations Tab -->
+    <div *ngIf="activeTab === 'registrations'" class="tab-content">
+      <div class="tab-header">
+        <h3>Registrations Management</h3>
+        <!-- Search Box -->
+        <div class="search-box">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="registrationSearchTerm"
+            (input)="searchRegistrations()"
+            placeholder="Search registrations..."
+          />
+        </div>
+      </div>
+
+      <!-- Edit Registration Form -->
+      <div *ngIf="editingRegistration" class="edit-form">
+        <h4>Edit Registration</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editName">Name</label>
+            <input
+              type="text"
+              id="editName"
+              [(ngModel)]="editingRegistration.name"
+              placeholder="Enter name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="editEmail">Email</label>
+            <input
+              type="email"
+              id="editEmail"
+              [(ngModel)]="editingRegistration.email"
+              placeholder="Enter email"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editCollege">College</label>
+            <input
+              type="text"
+              id="editCollege"
+              [(ngModel)]="editingRegistration.college"
+              placeholder="Enter college"
+            />
+          </div>
+          <div class="form-group">
+            <label for="editContact">Contact</label>
+            <input
+              type="text"
+              id="editContact"
+              [(ngModel)]="editingRegistration.contact"
+              placeholder="Enter contact"
+            />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" (click)="cancelEditRegistration()">
+            Cancel
+          </button>
+          <button class="btn-update" (click)="updateRegistration()">
+            Update Registration
+          </button>
+        </div>
+      </div>
+
+      <!-- Registrations Table -->
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>College</th>
+              <th>Contact</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registration of filteredRegistrations">
+              <td>{{ registration.registrationId }}</td>
+              <td class="primary-data">{{ registration.name }}</td>
+              <td>{{ registration.email }}</td>
+              <td>{{ registration.college }}</td>
+              <td>{{ registration.contact }}</td>
+              <td class="actions-cell">
+                <div class="action-buttons-container">
+                  <button
+                    class="edit-btn"
+                    (click)="startEditRegistration(registration)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                      ></path>
+                    </svg>
+                    Edit
+                  </button>
+                  <button
+                    class="delete-btn"
+                    (click)="deleteRegistration(registration.registrationId)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path
+                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                      ></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredRegistrations.length === 0">
+              <td colspan="6" class="no-data">No registrations found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Participants Tab -->
+    <div *ngIf="activeTab === 'participants'" class="tab-content">
+      <div class="tab-header">
+        <h3>Participants Management</h3>
+        <!-- Search Box -->
+        <div class="search-box">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="participantSearchTerm"
+            (input)="searchParticipants()"
+            placeholder="Search participants..."
+          />
+        </div>
+      </div>
+
+      <!-- Participants Table -->
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Event Name</th>
+              <th>Email</th>
+              <th>Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let participant of filteredParticipants">
+              <td>{{ participant.participantId }}</td>
+              <td class="primary-data">{{ participant.eventName }}</td>
+              <td>{{ participant.participantEmail }}</td>
+              <td>₹{{ participant.eventAmount }}</td>
+              <td class="actions-cell">
+                <div class="action-buttons-container">
+                  <button
+                    class="delete-btn"
+                    (click)="deleteParticipant(participant.participantId)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path
+                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                      ></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredParticipants.length === 0">
+              <td colspan="5" class="no-data">No participants found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

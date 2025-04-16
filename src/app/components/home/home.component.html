@@ -1,0 +1,52 @@
+<div class="home-container">
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <div class="welcome-text">
+        <h1>
+          <span class="tech">TECH</span><span class="fest">FEST</span>
+          <span class="year">2025</span>
+        </h1>
+        <p class="tagline">Innovate. Connect. Transform.</p>
+        <p class="description">
+          Join the largest tech festival and discover exciting events, connect
+          with tech enthusiasts, and showcase your skills.
+        </p>
+
+        <div class="cta-buttons">
+          <a routerLink="/events" class="btn btn-primary">Browse Events</a>
+          <ng-container *ngIf="!isLoggedIn">
+            <a routerLink="/register" class="btn btn-secondary">Register</a>
+            <a routerLink="/login" class="btn btn-outline">Login</a>
+          </ng-container>
+          <ng-container *ngIf="isLoggedIn">
+            <a routerLink="/profile" class="btn btn-secondary">My Profile</a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <div class="tech-graphic">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="tech-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#00c2ff"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
